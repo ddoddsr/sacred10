@@ -30,12 +30,8 @@ Route::middleware([
     })->name('dashboard');
 });
 
-// Route::get('/formnames', function () {
-//     $results = new Formsite();
-//     $results->getUsers();
-//     dd("DONE - Names");
-// });
 
-Route::get('/formnames',[FormsiteController::class, 'getUsers']);
+// revise readme when changing
+Route::get('/storeforms',[FormsiteController::class, 'storeForms']);
 
 Route::get('/formmeta',[FormsiteController::class, 'getFormMeta']);

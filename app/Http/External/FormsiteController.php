@@ -3,9 +3,7 @@
 namespace App\Http\External;
 
 use GuzzleHttp\Client;
-use SebastianBergmann\Type\NullType;
 use App\Http\Controllers\StaffController;
-// use Illuminate\Support\Facades\Http;
 
 class FormsiteController
 {
@@ -21,13 +19,10 @@ class FormsiteController
         ];
     }
 
-    public function getUsers()
+    public function storeForms()
     {
         $formData = $this->getFormData();
-        // dd("End"); 
-        // dd($formData);
         $staff = (new StaffController)->storeRecord($formData);
-        
     }
 
     public function getFormMeta()
@@ -35,7 +30,6 @@ class FormsiteController
         // formMeta (items) are the field id, postion and value
         // this output was used to make the array used in $this->fieldNames();
         logger("FormMeta");
-        
         $response =  $this->client->request(
             'GET',
             env('FORMSITE_API_URL' ) . '/items',
@@ -45,11 +39,11 @@ class FormsiteController
         );
         $contents = json_decode($response->getBody()->getContents());
 
-        $itemMeta =  []; 
+        $itemMeta =  [];
         foreach( $contents as $content) {
             foreach( $content as $field) {
                 // 'position'
-                $itemMeta [$field->id] = $field->label ;   
+                $itemMeta [$field->id] = $field->label ;
             }
         }
         logger($itemMeta);
@@ -72,6 +66,7 @@ class FormsiteController
                     [
                         'limit' => env('FORMSITE_LIMIT'),
                         'after_date' => env('FORMSITE_AFTER_DATE'),
+                        'before_date' => env('FORMSITE_BEFORE_DATE'),
                         'page' => $nextPage
                     ],
                     'headers' => $this->headers
@@ -86,8 +81,6 @@ class FormsiteController
             }
 
             $contents = json_decode($response->getBody()->getContents());
-            
-            $schedIndex = 10;  
             foreach ($contents->results as $result) {
                 $scheds = [];
                 $sched = (object)[];
@@ -96,7 +89,7 @@ class FormsiteController
                     // get the field number and look it up in $fieldNames
                     if (array_key_exists((int)$item->id,$fieldNames))
                     {
-                        // set a Variable variable for the fieldName 
+                        // set a Variable variable for the fieldName
                         $fieldName = $fieldNames[(int)$item->id];
                         $$fieldName = $item->value ?? 'n_a' ;
                         $fieldName  = ${$fieldName} ;
@@ -162,7 +155,7 @@ class FormsiteController
     }
 
     private function fieldNames() {
-        return [ 
+        return [
             92 => 'firstName',
             93 => 'lastName',
             91 => 'emailAddress',
