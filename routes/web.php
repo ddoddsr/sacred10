@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\External\FormsiteController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +29,13 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+// Route::get('/formnames', function () {
+//     $results = new Formsite();
+//     $results->getUsers();
+//     dd("DONE - Names");
+// });
+
+Route::get('/formnames',[FormsiteController::class, 'getUsers']);
+
+Route::get('/formmeta',[FormsiteController::class, 'getFormMeta']);
