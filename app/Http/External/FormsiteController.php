@@ -91,6 +91,7 @@ class FormsiteController
                     {
                         // set a Variable variable for the fieldName
                         $fieldName = $fieldNames[(int)$item->id];
+                        //TODO treim leading, trailing and internal extra spaces
                         $$fieldName = $item->value ?? 'n_a' ;
                         $fieldName  = ${$fieldName} ;
                         if ( in_array((int)$item->id, array_keys($fieldNames, 'day' ))) {

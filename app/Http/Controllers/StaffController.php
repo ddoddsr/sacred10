@@ -41,34 +41,26 @@ class StaffController extends Controller
                 );
                 // If a record exists what to do about it,
                 if ( $staffRecord->resultId != $form->resultId ) {
-                    // dd($form->sched);
-                    //logger("Found Existing ", ['Exist' => $staffRecord->resultId, 'Form' => (int)$form->resultId]);
+                    
                     if ( $staffRecord->resultId < (int)$form->resultId ) {
-                        //logger(" ID Less  ", ['Exist' => $staffRecord->resultId, 'Form' => (int)$form->resultId]);
+                        
                         // DO Nothing
                     } else {
-                      //  logger(" ID Greater", ['Exist' => $staffRecord->resultId, 'Form' => (int)$form->resultId]);
                         // replace data in DB with new record
                     }
 
                 } else {
-                    // this is a new record added
-                    //logger("Add new ", ['Exist' => $staffRecord->resultId, 'Form' => (int)$form->resultId]);
-                    // collect schedules, add
-                    // $scheds = [];
-                    // dd($form->sched );
                     foreach($form->sched as $schedLine){
                         if  (property_exists($schedLine, 'day' ) ){
-
                              $scheds =
-                            new Schedule(
-                                [
-                                    'day' => $schedLine->day,
-                                    'start' => $schedLine->start,
-                                    'end' => $schedLine->end,
-                                    'room' => $schedLine->location,
-                                ]
-                            );
+                                new Schedule(
+                                    [
+                                        'day' => $schedLine->day,
+                                        'start' => $schedLine->start,
+                                        'end' => $schedLine->end,
+                                        'room' => $schedLine->location,
+                                    ]
+                                );
                             $staffRecord->schedules()->save($scheds);
                         }
                     }

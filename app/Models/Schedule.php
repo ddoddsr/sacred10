@@ -9,7 +9,8 @@ class Schedule extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function staffMember(): BelongsTo
+
+    public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
     }
