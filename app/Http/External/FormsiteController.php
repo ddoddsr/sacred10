@@ -66,7 +66,8 @@ class FormsiteController
                     [
                         'limit' => env('FORMSITE_LIMIT'),
                         'after_date' => env('FORMSITE_AFTER_DATE'),
-                        'before_date' => env('FORMSITE_BEFORE_DATE'),
+                      // TODO REMOVE before after testing
+                        // 'before_date' => env('FORMSITE_BEFORE_DATE'),
                         'page' => $nextPage
                     ],
                     'headers' => $this->headers

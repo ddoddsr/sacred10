@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\External\FormsiteController;
-use App\Http\Controllers\GeneratePdfController;
-use App\Http\Controllers\PdfController;
+use App\Http\Controllers\Pdf;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +29,11 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+    // revise readme when changing
+    Route::get('/storeforms',[FormsiteController::class, 'storeForms']);
 
+    Route::get('/formmeta',[FormsiteController::class, 'getFormMeta']);
 
-// revise readme when changing
-Route::get('/storeforms',[FormsiteController::class, 'storeForms']);
+    Route::get('/pdf',[Pdf::class, 'test']);
 
-Route::get('/formmeta',[FormsiteController::class, 'getFormMeta']);
-
-Route::get('/pdf-builder',GeneratePdfController::class);
-
-Route::get('/pdf',[PdfController::class, 'test']);
+// });
