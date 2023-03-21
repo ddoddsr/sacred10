@@ -5,7 +5,7 @@ use App\Http\External\FormsiteController;
 use App\Http\Controllers\Pdf;
 use App\Models\Comment;
 use App\Models\Set;
-
+use App\Http\Livewire\SetTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,10 +40,10 @@ Route::middleware([
 
     Route::get('/sets/{set}/edit', function (Set $set) {
         return view('sets/edit', ['set' => $set]);
-    });
-    Route::get('/sets', function (Set $set) {
-        return view('sets/table', ['set' => $set]);
-    });
+    })->name('set.edit');
+    Route::get('/set/edit', SetTable::class);
+
+    Route::get('/sets', SetTable::class);
 
     Route::patch('/sets/{set}', function (Set $set) {
         $set->update(
