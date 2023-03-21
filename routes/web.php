@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\Set;
+use App\Models\Staff;
+use App\Models\Comment;
+use App\Http\Controllers\Pdf;
+use App\Http\Livewire\SetTable;
+use App\Http\Livewire\StaffTable;
 use Illuminate\Support\Facades\Route;
 use App\Http\External\FormsiteController;
-use App\Http\Controllers\Pdf;
-use App\Models\Comment;
-use App\Models\Set;
-use App\Http\Livewire\SetTable;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +43,8 @@ Route::middleware([
     Route::get('/sets/{set}/edit', function (Set $set) {
         return view('sets/edit', ['set' => $set]);
     })->name('set.edit');
-    Route::get('/set/edit', SetTable::class);
 
+    // Route::get('/set/edit', SetTable::class);
     Route::get('/sets', SetTable::class);
 
     Route::patch('/sets/{set}', function (Set $set) {
@@ -58,6 +60,12 @@ Route::middleware([
 
         return redirect("/sets/{$set->id}/edit");
     });
+
+    Route::get('/staff', StaffTable::class);
+    // Route::get('/staff/edit', StaffTable::class);
+    Route::get('/staff/{staff}/edit', function (Staff $staff) {
+        return view('staff/edit', ['staff' => $staff]);
+    })->name('staff.edit');
 
     Route::get('/comments/{comment}/edit', function (Comment $comment) {
         return view('comments.edit', ['comment' => $comment]);

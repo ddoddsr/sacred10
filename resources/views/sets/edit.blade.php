@@ -11,42 +11,32 @@
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700"> Set {{ $set->setOfDay }}
                 </label>
             </div>
-            <div>
-                <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="worshipLeader"> Worship Leader </label>
-                <textarea class="border border-gray-400 p-2 w-full"
+            <div class="flex">
+                <label class="mb-2 uppercase font-bold text-xs text-gray-700" for="worshipLeader"> Worship Leader </label>
+                <x-input class="border border-gray-400 p-2 w-fhalf"
                           name="worshipLeader" id="worshipLeader"
-                          required
-                >
+                          value="{{ $set->worshipLeader }}">
                     {{ $set->worshipLeader }}
-                </textarea>
-            </div>
-            <div>
-                <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="prayerLeader"> Prayer Leader </label>
-                <textarea class="border border-gray-400 p-2 w-full"
+                </x-input>
+
+
+                <label class="mb-2 uppercase font-bold text-xs text-gray-700" for="prayerLeader"> Prayer Leader </label>
+                <x-input class="border border-gray-400 p-2 w-half"
                           name="prayerLeader" id="prayerLeader"
-                          required
+                            value="{{ $set->prayerLeader }}"
                 >
                     {{ $set->prayerLeader }}
-                </textarea>
-            </div>
-            <div>
+                </x-input>
+
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="sectionLeader"> Section Leader </label>
-                <textarea class="border border-gray-400 p-2 w-full"
+                <x-input class="border border-gray-400 p-2 w-half"
                           name="sectionLeader" id="sectionLeader"
-                          required
+                        value="{{ $set->sectionLeader }}"
                 >
-                    {{ $set->sectionLeader }}
-                </textarea>
+                {{ $set->sectionLeader }}
+                </x-input>
             </div>
 
-
-
-
-
-            {{-- worshipLeader
-                sectionLeader
-                prayerLeader
-             --}}
             <div class="mb-6">
                 <button type="submit"
                         class="bg-blue-400 text-red rounded py-2 px-4 hover:bg-blue-500"

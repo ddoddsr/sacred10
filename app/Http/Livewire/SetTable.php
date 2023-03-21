@@ -30,7 +30,7 @@ final class SetTable extends PowerGridComponent
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
             Header::make()->showSearchInput(),
             Footer::make()
-                ->showPerPage()
+                ->showPerPage(12, [12, 24, 50, 84, 0])
                 ->showRecordCount(),
         ];
     }
@@ -92,6 +92,7 @@ final class SetTable extends PowerGridComponent
             ->addColumn('sectionLeader')
             ->addColumn('worshipLeader')
             ->addColumn('prayerLeader')
+            ->addColumn('location')
             ;
             // ->addColumn('created_at_formatted', fn (Set $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
             // ->addColumn('updated_at_formatted', fn (Set $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
@@ -132,6 +133,9 @@ final class SetTable extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
             Column::make('Prayer Leader','prayerLeader')
+                ->searchable()
+                ->sortable(),
+            Column::make('Location','location')
                 ->searchable()
                 ->sortable(),
             // Column::make('CREATED AT', 'created_at_formatted', 'created_at')
