@@ -61,12 +61,27 @@ Route::middleware([
         return redirect("/sets/{$set->id}/edit");
     });
 
+// STAFF
     Route::get('/staff', StaffTable::class);
     // Route::get('/staff/edit', StaffTable::class);
     Route::get('/staff/{staff}/edit', function (Staff $staff) {
         return view('staff/edit', ['staff' => $staff]);
     })->name('staff.edit');
+    Route::patch('/staff/{staff}', function (Staff $staff) {
+        $staff->update(
+            request()->validate(
+                [
+                    'firstName' => 'string',
+                    'lastName' => 'string',
+                    'email' => 'string',
+                ]
+            )
+        );
 
+        return redirect("/staff/{$staff->id}/edit");
+    });
+
+//COMMENTS
     Route::get('/comments/{comment}/edit', function (Comment $comment) {
         return view('comments.edit', ['comment' => $comment]);
     });
