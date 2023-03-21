@@ -47,7 +47,13 @@ Route::middleware([
 
     Route::patch('/sets/{set}', function (Set $set) {
         $set->update(
-            request()->validate(['dayOfWeek' => 'required|string'])
+            request()->validate(
+                [
+                    'worshipLeader' => 'string',
+                    'prayerLeader' => 'string',
+                    'sectionLeader' => 'string',
+                ]
+            )
         );
 
         return redirect("/sets/{$set->id}/edit");
