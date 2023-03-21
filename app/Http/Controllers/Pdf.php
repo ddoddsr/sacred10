@@ -8,8 +8,6 @@ use App\Models\Schedule;
 use Carbon\Carbon;
 use Codedge\Fpdf\Fpdf\FPDF;
 
-// use PDF;
-
 class Pdf extends FPDF
 {
 
@@ -20,9 +18,7 @@ class Pdf extends FPDF
         $setWithScheds = [];
 
         foreach ($setRecords as $setData ) {
-
             // Get all  names for this set
-
             $setWithScheds[] = [
                 'sequence' => $setData->sequence,
                 'dayOfWeek' => $setData->dayOfWeek,
@@ -32,43 +28,33 @@ class Pdf extends FPDF
                 'worshipLeader' => $setData->worshipLeader ,
                 'prayerLeader' => $setData->prayerLeader ,
                 'title' => $setData->title ,
-                'scheds' =>  $this->collectSchedSets($setData->dayOfWeek, $setData->setOfDay, 'GPR') //$schedules
+                'scheds' =>  $this->collectSchedSets($setData->dayOfWeek, $setData->setOfDay, 'GPR') ,
             ];
         }
 
-        unset($schedules);
         unset($setRecords);
         $this->generatePdf($setWithScheds) ;
-
-
-        // eventually download a PDF
     }
 
     public function generatePdf($setWithScheds ) {
-        $margins  =[
-            'top' => 30,
-            'left' => 50,
-        ];
+
         // get todays date time
-        $dateTime = 'Updated: May 21 1982 ' ;// + moment().format('yyyy-mm-dd:hh:mm');;
+        $dateTime = 'Updated: ' . Carbon::now()->format('M d Y');
 
-        $topOfColumns = 80;
 
-        $pdf = new Pdf('L','pt') ;
+        $pdf = new Pdf('L','pt', 'Letter') ;
         $pdf->SetTitle('Sacred Trust');
-        $leaderWidth= ( $pdf->GetPageWidth() - 30 ) ;
-        $taglinePos = $pdf->GetPageHeight() - 60 ;
+        $pdf->SetAutoPageBreak(true,5);
 
+        $leaderWidth = $pdf->GetPageWidth() -35 ;
+        $taglinePos =  - 20 ;
+        $tagline = env('FOOTER_STATEMENT','Set FOOTER_STATEMENT in .env');
+        $topOfColumns = 80;
         $postionColumn = 0; // index of name column
 
-        $namesPerColumn = 3; //TODO 48;
+        $namesPerColumn = 48;
         $maxColumns = 6;
         foreach($setWithScheds as $set) {
-            // $pdf->Rect(
-            //     $topOfColumns ,
-            //     $margins['left'],
-            //     400,
-            //     400);
             $maxNamesOnPage = $namesPerColumn * $maxColumns ; // start with 6 columns
             if ( $maxNamesOnPage  < 22) {
                 $nameFontSize = 10;
@@ -83,8 +69,7 @@ class Pdf extends FPDF
 
             $pdf->AddPage();
             $pdf->SetFont('Arial', 'B', 24);
-            // "sequence" => 1
-            // $$set['location']);
+
             $pdf->Cell(0,0, $set['title'], 0, 1, 'C');
 
             $pdf->Ln(32);
@@ -102,7 +87,7 @@ class Pdf extends FPDF
                 if ($name != '' ) {
                     $rowCount++;
 
-                    $pdf->Text( $margins['left'] +($columnSpacing * $postionColumn),
+                    $pdf->Text( 50 +($columnSpacing * $postionColumn),
                         $topOfColumns + ( $rowCount * $rowHeight), $name );
 
                     if ($rowCount != 1 && $rowCount % $namesPerColumn == 0) {
@@ -116,16 +101,25 @@ class Pdf extends FPDF
             $pdf->SetFont('Arial', 'B', 12);
 
             $pdf->SetY( $taglinePos );
-            $pdf->Cell( $leaderWidth, 0, $set['dayOfWeek'] . ' ' . $set['setOfDay']   , 0, 1, 'L');
-
-            $pdf->Cell($leaderWidth,0, "tagline" , 0, 1, 'C');
-            $pdf->Cell($leaderWidth - 10,0, $dateTime   , 0, 1, 'R');
+            $pdf->Cell( $leaderWidth, 0, $set['dayOfWeek'] . ' ' . $set['setOfDay'], 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell( $leaderWidth, 0, $tagline, 0, 1, 'C');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell( $leaderWidth ,0, $dateTime, 0, 1, 'R');
 
             //$dateTime
         }
         $pdf->Output();
     }
-
+    // function Footer()
+    // {
+    //     // Go to 1.5 cm from bottom
+    //     $this->SetY(-15);
+    //     // Select Arial italic 8
+    //     $this->SetFont('Arial', 'I', 8);
+    //     // Print centered page number
+    //     $this->Cell(0, 10, 'Page '.$this->PageNo(), 0, 0, 'C');
+    // }
     public function collectSchedSets($day, $set, $location) {
         $schedLines = [];
         $daysOfWeek = [];
