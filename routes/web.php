@@ -4,6 +4,7 @@ use App\Models\Set;
 use App\Models\Staff;
 use App\Models\Comment;
 use App\Http\Controllers\Pdf;
+use App\Http\Controllers\UserController;
 use App\Http\Livewire\SetTable;
 use App\Http\Livewire\StaffTable;
 use Illuminate\Support\Facades\Route;
@@ -102,3 +103,5 @@ Route::middleware([
         return redirect('/');
     });
  });
+
+ Route::get('/users',[UserController::class, 'index']);
