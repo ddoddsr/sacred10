@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Staff;
+use App\Models\Schedule;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class StaffTable extends PowerGridComponent
+final class ScheduleTable extends PowerGridComponent
 {
     use ActionButton;
 
@@ -22,18 +22,19 @@ final class StaffTable extends PowerGridComponent
     */
     public function setUp(): array
     {
-        $this->showCheckBox();
-        
+        // $this->showCheckBox();
+
         return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            // Exportable::make('export')
+            //     ->striped()
+                // ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+            Header::make()
+                ->showSearchInput()
+                // ->showToggleColumns()
+                ,
             Footer::make()
                 ->showPerPage()
-                ->showRecordCount()
-                // ->pagination('components.pagination')
-                ,
+                ->showRecordCount(),
         ];
     }
 
@@ -48,11 +49,11 @@ final class StaffTable extends PowerGridComponent
     /**
     * PowerGrid datasource.
     *
-    * @return Builder<\App\Models\Staff>
+    * @return Builder<\App\Models\Schedule>
     */
     public function datasource(): Builder
     {
-        return Staff::query();
+        return Schedule::query();
     }
 
     /*
@@ -87,15 +88,20 @@ final class StaffTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('firstName')
-            ->addColumn('lastName')
-            // ->addColumn('email')
-            ->addColumn('designation')
+            // ->addColumn('id')
+            ->addColumn('day')
+
+           /** Example of custom column using a closure **/
+            ->addColumn('day_lower', function (Schedule $model) {
+                return strtolower(e($model->day));
+            })
+
+            ->addColumn('start')
+            ->addColumn('end')
+            ->addColumn('room')
+            ->addColumn('created_at_formatted', fn (Schedule $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i'))
             ;
-
-
-            // ->addColumn('created_at_formatted', fn (Staff $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
-            // ->addColumn('updated_at_formatted', fn (Staff $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'))
+            // ->addColumn('updated_at_formatted', fn (Schedule $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s');
     }
 
     /*
@@ -115,19 +121,33 @@ final class StaffTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('First Name', 'firstName'),
-            Column::make('Last Name', 'lastName')
+            // Column::make('ID', 'id')
+            //     ->makeInputRange(),
+
+            Column::make('DAY', 'day')
+                ->sortable()
                 ->searchable()
-                ->sortable(),
-            // Column::make('Email', 'email')
-            Column::make('Designation', 'designation')
-                ->sortable(),
+                ->makeInputText(),
 
+            Column::make('START', 'start')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
 
-            // Column::make('CREATED AT', 'created_at_formatted', 'created_at')
-            //     ->searchable()
-            //     ->sortable()
-            //     ->makeInputDatePicker(),
+            Column::make('END', 'end')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make('ROOM', 'room')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::make('CREATED AT', 'created_at_formatted', 'created_at')
+                ->searchable()
+                ->sortable()
+                ->makeInputDatePicker(),
 
             // Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
             //     ->searchable()
@@ -147,25 +167,25 @@ final class StaffTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Staff Action Buttons.
+     * PowerGrid Schedule Action Buttons.
      *
      * @return array<int, Button>
      */
 
+    /*
     public function actions(): array
     {
-        return [
-            Button::make('edit', 'Edit')
-            ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-            ->route('staff.edit', ['staff' => 'id']),
+       return [
+           Button::make('edit', 'Edit')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('schedule.edit', ['schedule' => 'id']),
 
-            // Button::make('destroy', 'Delete')
-            // ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-            // ->route('staff.destroy', ['staff' => 'id'])
-            // ->method('delete')
+           Button::make('destroy', 'Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('schedule.destroy', ['schedule' => 'id'])
+               ->method('delete')
         ];
     }
-    /*
     */
 
     /*
@@ -177,7 +197,7 @@ final class StaffTable extends PowerGridComponent
     */
 
      /**
-     * PowerGrid Staff Action Rules.
+     * PowerGrid Schedule Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -189,7 +209,7 @@ final class StaffTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($staff) => $staff->id === 1)
+                ->when(fn($schedule) => $schedule->id === 1)
                 ->hide(),
         ];
     }

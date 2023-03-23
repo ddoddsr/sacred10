@@ -1,5 +1,5 @@
-<x-app-layout>
+<x-guest-layout>
     <x-section>
         Welcome
     </x-section>
-</x-app-layout>
+</x-guest-layout>

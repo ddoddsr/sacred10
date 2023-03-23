@@ -15,7 +15,7 @@
                 </div>
                 <div class="p-2">
                     <label class=" p-6 mb-2 uppercase font-bold text-xs text-gray-700" for="lastName"> Last Name </label>
-                    <x-input class=" border border-gray-400 p-1.5 m-2"
+                    <x-input class="border  p-1.5 m-2"
                             name="lastName" id="lastName"
                             value="{{ $staff->lastName }}">
                         {{ $staff->lastName }}
@@ -23,7 +23,7 @@
                 </div>
                 <div class="p-2">
                     <label class=" p-6 mb-2 uppercase font-bold text-xs text-gray-700" for="designation"> Designation </label>
-                    <x-input class="border border-gray-400 p-1.5"
+                    <x-input class="w-96 border border-gray-400 p-1.5 m-2"
                             name="designation" id="designation"
                             value="{{ $staff->designation }}">
                         {{ $staff->designation }}
@@ -36,17 +36,17 @@
                             value="{{ $staff->email }}">
                         {{ $staff->email }}
                     </x-input> --}}
-                </div>
-
+                {{-- </div> --}}
             </div>
 
             <div class="mb-6">
                 <button type="submit"
-                        class="bg-blue-400 text-red rounded py-2 px-4 hover:bg-blue-500"
+                class="bg-blue-400 text-red rounded py-2 px-4 hover:bg-blue-500"
                 >
-                    Submit
-                </button>
-            </div>
-        </x-form>
+                Submit
+            </button>
+        </div>
+        <livewire:schedule-table staff_id={{ $staff->id }}/>
+    </x-form>
     </x-section>
 </x-app-layout>

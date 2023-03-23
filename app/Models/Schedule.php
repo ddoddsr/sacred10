@@ -10,6 +10,9 @@ class Schedule extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $fillable = [
+        'day', 'set', 'start', 'end', 'room'
+    ];
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
