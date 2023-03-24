@@ -16,6 +16,21 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('staff.table') }}" :active="request()->routeIs('staff.table')">
+                        {{ __('Staff') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('sets.table') }}" :active="request()->routeIs('sets.table')">
+                        {{ __('Sets') }}
+                    </x-nav-link>
+                </div>
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('remote.utils') }}" :active="request()->routeIs('remote.utils')">
+                        {{ __('Data Utils') }}
+                    </x-nav-link>
+                </div> --}}
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -108,6 +123,20 @@
 
                             <div class="border-t border-gray-200"></div>
 
+                            <!-- User Management -->
+                            <x-dropdown-link href="{{ route('users.table') }}">
+                                {{ __('Manage Users') }}
+                            </x-dropdown-link>
+
+                            <div class="border-t border-gray-200"></div>
+
+                            <!-- Utility Management -->
+                            <x-dropdown-link href="{{ route('remote.utils') }}">
+                                {{ __('Manage I/O') }}
+                            </x-dropdown-link>
+
+                            <div class="border-t border-gray-200"></div>
+
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
@@ -139,6 +168,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('staff.table') }}" :active="request()->routeIs('staff.table')">
+                {{ __('Staff Table') }}
             </x-responsive-nav-link>
         </div>
 
@@ -208,7 +242,30 @@
                     @foreach (Auth::user()->allTeams() as $team)
                         <x-switchable-team :team="$team" component="responsive-nav-link" />
                     @endforeach
+
                 @endif
+                    {{--  Admin User Managment --}}
+                    {{-- TODO @can('admin', UserTable) --}}
+                        <div class="border-t border-gray-200"></div>
+
+                        <x-responsive-nav-link href="{{ route('remote.utils') }}" :active="request()->routeIs('remote.utils')">
+                            {{ __('Manage I/O') }}
+                        </x-responsive-nav-link>
+                    {{-- @endcan --}}
+
+                    {{--  Remote Managment --}}
+                    {{-- TODO @can('admin', UserTable) --}}
+                        <div class="border-t border-gray-200"></div>
+
+                        <x-responsive-nav-link href="{{ route('users.table') }}" :active="request()->routeIs('users.table')">
+                            {{ __('Manage Admin Users') }}
+                        </x-responsive-nav-link>
+                    {{-- @endcan --}}
+
+                    <div class="border-t border-gray-200"></div>
+
+
+
             </div>
         </div>
     </div>

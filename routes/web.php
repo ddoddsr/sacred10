@@ -1,10 +1,15 @@
 <?php
 
+use App\Models\Set;
+use App\Models\Comment;
+use App\Http\Controllers\Pdf;
+use App\Http\Livewire\Utility;
+use App\Http\Livewire\SetsTable;
+use App\Http\Livewire\StaffTable;
+use App\Http\Livewire\UsersTable;
 use Illuminate\Support\Facades\Route;
 use App\Http\External\FormsiteController;
-use App\Http\Controllers\Pdf;
-use App\Models\Comment;
-use App\Models\Set;
+
 
 
 /*
@@ -41,9 +46,6 @@ Route::middleware([
     Route::get('/sets/{set}/edit', function (Set $set) {
         return view('sets/edit', ['set' => $set]);
     });
-    Route::get('/sets', function (Set $set) {
-        return view('sets/table', ['set' => $set]);
-    });
 
     Route::patch('/sets/{set}', function (Set $set) {
         $set->update(
@@ -72,4 +74,12 @@ Route::middleware([
 
         return redirect('/');
     });
+
+    Route::get('/users', [ UsersTable::class, 'render'])->name('users.table');
+
+    Route::get('/staff', [ StaffTable::class, 'render'])->name('staff.table');
+
+    Route::get('/sets', [ SetsTable::class, 'render'])->name('sets.table');
+
+    Route::get('/utils', [ Utility::class,'render'])->name('remote.utils');
  });
