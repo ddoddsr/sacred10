@@ -14,15 +14,22 @@ class UsersTable extends Component
     public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
+    public $active = true;
 
     public function render()
     {
+        // tuck this away as a query scope on the model??
         return view('livewire.users-table',[
             'users' => User::search($this->search)
+            ->where('active' , $this->active )
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
-            // ->simplePaginate($this->perPage),
-            ->paginate($this->perPage),
-
+            ->simplePaginate($this->perPage),  // just prev & next buttons
+            // ->paginate($this->perPage),
         ]);
+    }
+
+    public function edit($user) {
+        dump("STUB of: open view of edit model $user ");
+        // dd($user);
     }
 }

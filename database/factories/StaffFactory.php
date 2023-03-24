@@ -17,7 +17,10 @@ class StaffFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'firstName' => $this->faker->name(),
+            'lastName' => $this->faker->name(),
+            'designation' => 'Full Time Ministry Staff',
+            
         ];
     }
 }

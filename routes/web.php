@@ -4,10 +4,11 @@ use App\Models\Set;
 use App\Models\Staff;
 use App\Models\Comment;
 use App\Http\Controllers\Pdf;
-use App\Http\Controllers\UserController;
 use App\Http\Livewire\SetTable;
+use App\Http\Livewire\UserTable;
 use App\Http\Livewire\StaffTable;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\External\FormsiteController;
 
 /*
@@ -46,7 +47,7 @@ Route::middleware([
     })->name('set.edit');
 
     // Route::get('/set/edit', SetTable::class);
-    Route::get('/sets', SetTable::class);
+    Route::get('/sets', SetTable::class)->name('sets');
 
     Route::patch('/sets/{set}', function (Set $set) {
         $set->update(
@@ -63,7 +64,7 @@ Route::middleware([
     });
 
 // STAFF
-    Route::get('/staff', StaffTable::class);
+    Route::get('/staff', StaffTable::class)->name('staff');
     // Route::get('/staff/edit', StaffTable::class);
     Route::get('/staff/{staff}/edit', function (Staff $staff) {
         return view('staff/edit', ['staff' => $staff]);
@@ -104,4 +105,7 @@ Route::middleware([
     });
  });
 
- Route::get('/users',[UserController::class, 'index']);
+ Route::get('/users',[UserController::class, 'index'])
+ ->name('users');
+ Route::get('/users/{user}/edit',[UserTable::class, 'edit'])
+ ->name('users.edit');
