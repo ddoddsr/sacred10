@@ -43,10 +43,10 @@ class StaffController extends Controller
                 if ( $staffRecord->resultId != $form->resultId ) {
                     
                     if ( $staffRecord->resultId < (int)$form->resultId ) {
-                        
-                        // DO Nothing
+                        // DO Nothing older record
                     } else {
                         // replace data in DB with new record
+                        // resultId   dates super info
                     }
 
                 } else {
