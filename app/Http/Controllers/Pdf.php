@@ -10,8 +10,25 @@ use Codedge\Fpdf\Fpdf\FPDF;
 
 class Pdf extends FPDF
 {
+    public $pdf; 
 
-    public function test()
+    // public function _construct()
+    // {
+    //     $this->pdf = $this;
+        
+    // }
+
+    public function testme() {
+// $fpdf = $this;
+        $this->AddPage();
+        $this->SetFont('Courier', 'B', 18);
+        $this->Cell(50, 25, 'Hello World!');
+        $this->Output();
+        exit;
+    
+    }
+
+    public function setSchedule()
     {
         // get staff sched into sets
         $setRecords = Set::all();
@@ -31,85 +48,86 @@ class Pdf extends FPDF
                 'scheds' =>  $this->collectSchedSets($setData->dayOfWeek, $setData->setOfDay, 'GPR') ,
             ];
         }
-
+logger($setWithScheds);
         unset($setRecords);
-        $this->generatePdf($setWithScheds) ;
+        // $this->generatePdf($setWithScheds) ;
     }
 
     public function generatePdf($setWithScheds ) {
 
         // get todays date time
         $dateTime = 'Updated: ' . Carbon::now()->format('M d Y');
+        $pdf = $this;
 
-
-        $pdf = new Pdf('L','pt', 'Letter') ;
+        $pdf = new FPDF('L','pt', 'Letter') ;
         $pdf->SetTitle('Sacred Trust');
-        $pdf->SetAutoPageBreak(true,5);
+        // $pdf->SetAutoPageBreak(true,5);
 
-        $leaderWidth = $pdf->GetPageWidth() -35 ;
-        $taglinePos =  - 20 ;
-        $tagline = env('FOOTER_STATEMENT','Set FOOTER_STATEMENT in .env');
-        $topOfColumns = 80;
-        $postionColumn = 0; // index of name column
+        // $leaderWidth = $pdf->GetPageWidth() -35 ;
+        // $taglinePos =  - 20 ;
+        // $tagline = env('FOOTER_STATEMENT','Set FOOTER_STATEMENT in .env');
+        // $topOfColumns = 80;
+        // $postionColumn = 0; // index of name column
 
-        $namesPerColumn = 48;
-        $maxColumns = 6;
-        foreach($setWithScheds as $set) {
-            $maxNamesOnPage = $namesPerColumn * $maxColumns ; // start with 6 columns
-            if ( $maxNamesOnPage  < 22) {
-                $nameFontSize = 10;
-                $rowHeight = 12;
-                $maxColumns = 6;
-            } else {
-                $nameFontSize = 8;
-                $rowHeight = 10;
-                $maxColumns = 7;
-            }
-            $columnSpacing = $pdf->GetPageWidth() / $maxColumns -5;
+        // $namesPerColumn = 48;
+        // $maxColumns = 6;
+        // foreach($setWithScheds as $set) {
+        //     $maxNamesOnPage = $namesPerColumn * $maxColumns ; // start with 6 columns
+        //     if ( $maxNamesOnPage  < 22) {
+        //         $nameFontSize = 10;
+        //         $rowHeight = 12;
+        //         $maxColumns = 6;
+        //     } else {
+        //         $nameFontSize = 8;
+        //         $rowHeight = 10;
+        //         $maxColumns = 7;
+        //     }
+        //     $columnSpacing = $pdf->GetPageWidth() / $maxColumns -5;
 
-            $pdf->AddPage();
-            $pdf->SetFont('Arial', 'B', 24);
+        //     $pdf->AddPage();
+        //     $pdf->SetFont('Arial', 'B', 24);
 
-            $pdf->Cell(0,0, $set['title'], 0, 1, 'C');
+        //     $pdf->Cell(0,0, $set['title'], 0, 1, 'C');
 
-            $pdf->Ln(32);
-            $pdf->SetFont('Arial', 'B', 14);
-            $pdf->Cell($leaderWidth,0, "WL-----------" .$set['worshipLeader']  , 0, 1, 'L');
-            $pdf->Cell($leaderWidth,0, "PL-----------" . $set['prayerLeader'], 0, 1, 'C');
-            $pdf->Cell($leaderWidth,0, "theodora Westleaphilanotec" . $set['sectionLeader']  , 0, 1, 'R');
-            $pdf->Ln(32);
-            $pdf->SetFont('Arial', '', $nameFontSize);
+        //     $pdf->Ln(32);
+        //     $pdf->SetFont('Arial', 'B', 14);
+        //     $pdf->Cell($leaderWidth,0, "WL-----------" .$set['worshipLeader']  , 0, 1, 'L');
+        //     $pdf->Cell($leaderWidth,0, "PL-----------" . $set['prayerLeader'], 0, 1, 'C');
+        //     $pdf->Cell($leaderWidth,0, "theodora Westleaphilanotec" . $set['sectionLeader']  , 0, 1, 'R');
+        //     $pdf->Ln(32);
+        //     $pdf->SetFont('Arial', '', $nameFontSize);
 
-            $rowCount = 0;
-            $postionColumn = 0;
+        //     $rowCount = 0;
+        //     $postionColumn = 0;
 
-            foreach($set['scheds'] as $name ) {
-                if ($name != '' ) {
-                    $rowCount++;
+        //     foreach($set['scheds'] as $name ) {
+        //         if ($name != '' ) {
+        //             $rowCount++;
 
-                    $pdf->Text( 50 +($columnSpacing * $postionColumn),
-                        $topOfColumns + ( $rowCount * $rowHeight), $name );
+        //             $pdf->Text( 50 +($columnSpacing * $postionColumn),
+        //                 $topOfColumns + ( $rowCount * $rowHeight), $name );
 
-                    if ($rowCount != 1 && $rowCount % $namesPerColumn == 0) {
-                        $postionColumn++;
-                    }
-                    if( $namesPerColumn == $rowCount ) { $rowCount = 0; }
+        //             if ($rowCount != 1 && $rowCount % $namesPerColumn == 0) {
+        //                 $postionColumn++;
+        //             }
+        //             if( $namesPerColumn == $rowCount ) { $rowCount = 0; }
 
-                }
-            }
+        //         }
+        //     }
 
-            $pdf->SetFont('Arial', 'B', 12);
+        //     $pdf->SetFont('Arial', 'B', 12);
 
-            $pdf->SetY( $taglinePos );
-            $pdf->Cell( $leaderWidth, 0, $set['dayOfWeek'] . ' ' . $set['setOfDay'], 0, 1, 'L');
-            $pdf->SetFont('Arial', 'B', 10);
-            $pdf->Cell( $leaderWidth, 0, $tagline, 0, 1, 'C');
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell( $leaderWidth ,0, $dateTime, 0, 1, 'R');
+        //     $pdf->SetY( $taglinePos );
+        //     $pdf->Cell( $leaderWidth, 0, $set['dayOfWeek'] . ' ' . $set['setOfDay'], 0, 1, 'L');
+        //     $pdf->SetFont('Arial', 'B', 10);
+        //     $pdf->Cell( $leaderWidth, 0, $tagline, 0, 1, 'C');
+        //     $pdf->SetFont('Arial', 'B', 12);
+        //     $pdf->Cell( $leaderWidth ,0, $dateTime, 0, 1, 'R');
 
-            //$dateTime
-        }
-        $pdf->Output();
+        //     //$dateTime
+        // }
+        $pdf->Output('I');
+        // $pdf->Output('F', 'staff-set-schedule.pdf');
     }
     // function Footer()
     // {
@@ -186,7 +204,7 @@ class Pdf extends FPDF
         // return $setSched;
 
     }
-    public function test3() {
+    public function test() {
         logger("PdfController");
         // set page ('P',')
         $pdf = new FPDF('P','mm','LETTER');
@@ -201,7 +219,8 @@ class Pdf extends FPDF
         $pdf->Cell(60,10,'Powered by FPDF.',0,1,'C');
         //          H  V
         $pdf->Text(10,200,"THis is the Text method");
-        $pdf->Output();
+        $pdf->Output('I');
+        
         exit;
 
     }
