@@ -3,13 +3,14 @@ sacred10 is a Sacred trust builder and PDF generter initially using formsite for
 Made with Laravel 10 and Jetstream/Blade for future features.
 ### Current 
 - run php artisan serve to start server
-- In development the url is localhost:/3000
-- use /storeforms to store user data including schedules  (run once for now)
-- use /formmeta for the headings for the results
+- In development the url is localhost:/8000
+- use /utils for various I/O functions
+-- Store user data including schedules  (run once for now)
+-- Generate the PDF from the staff and scheduled data
+
 
 ### Roadmap
 - Allow additional runnings of storeforms to get new data / replace old data
-- Generate the PDF from the staff and scheduled data
 - Allow HR admins to modify daya as needed
 - add fields and functions that would assist HR
 

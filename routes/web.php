@@ -35,13 +35,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-// });  //TODO add below to auth group
+
     // TODO revise readme when changing
-    Route::post('/storeforms',[FormsiteController::class, 'storeForms'])->name('storeforms');
 
     Route::get('/formmeta',[FormsiteController::class, 'getFormMeta']);
-
-    Route::get('/pdf',[Pdf::class, 'setSchedule']);
 
     Route::get('/sets/{set}/edit', function (Set $set) {
         return view('sets/edit', ['set' => $set]);
@@ -89,8 +86,7 @@ Route::middleware([
 
     Route::post('/importStaffSchedules', [ Utility::class,'importStaffSchedules'])->name('importStaffSchedules');
     
-    Route::post('/generateStaffSetdPdf', [ Utility::class,'generateStaffSetdPdf'])->name('generateStaffSetdPdf');
+    Route::post('/generateStaffSetdPdf', [ Utility::class,'generateStaffSetPdf'])->name('generateStaffSetdPdf');
 
 
-    //  
  });

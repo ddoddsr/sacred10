@@ -10,7 +10,6 @@ use App\Http\External\FormsiteController;
 
 class Utility extends Component
 {
-
     public $confirmingStaffDeletion = false;
     
     public function render()
@@ -32,16 +31,17 @@ class Utility extends Component
     public function importStaffSchedules() 
     {
         logger("Importing Staff and Schedule");
+        Schedule::truncate();
+        Staff::truncate();
         $fooSite = new FormsiteController;
         $fooSite->storeForms();
     }
     
-    public function generateStaffSetdPdf() 
+    public function generateStaffSetPdf() 
     {
         logger("Generating Staff Set Schedule");
         $pdf = new Pdf;
-        $pdf->testme();
+        $pdf->setSchedule();
     }
-
 
 }

@@ -10,23 +10,12 @@ use Codedge\Fpdf\Fpdf\FPDF;
 
 class Pdf extends FPDF
 {
-    public function __construct($orentation = 'L')
+    public function __construct($orentation = 'L', $unit = 'pt', $size = 'Letter')
     {
-        parent::__construct($orentation);
-        
+        parent::__construct($orentation, $unit, $size);
     }
 
-    public function testme() {
-
-        $this->AddPage();
-        $this->SetFont('Courier', 'B', 18);
-        $this->Cell(50, 25, 'Hello World!');
-        $this->Output('F', 'report.pdf');
-        exit;
-    
-    }
-
-    public function setSchedule()
+    public function setSchedule($location='GPR')
     {
         // get staff sched into sets
         $setRecords = Set::all();
@@ -43,7 +32,7 @@ class Pdf extends FPDF
                 'worshipLeader' => $setData->worshipLeader ,
                 'prayerLeader' => $setData->prayerLeader ,
                 'title' => $setData->title ,
-                'scheds' =>  $this->collectSchedSets($setData->dayOfWeek, $setData->setOfDay, 'GPR') ,
+                'scheds' =>  $this->collectSchedSets($setData->dayOfWeek, $setData->setOfDay, $location) ,
             ];
         }
 
@@ -55,9 +44,7 @@ class Pdf extends FPDF
 
         // get todays date time
         $dateTime = 'Updated: ' . Carbon::now()->format('M d Y');
-        
 
-        $pdf = new Pdf('L','pt', 'Letter') ;
         $this->SetTitle('Sacred Trust');
         $this->SetAutoPageBreak(true,5);
 
@@ -89,9 +76,9 @@ class Pdf extends FPDF
 
             $this->Ln(32);
             $this->SetFont('Arial', 'B', 14);
-            $this->Cell($leaderWidth,0, "WL-----------" .$set['worshipLeader']  , 0, 1, 'L');
-            $this->Cell($leaderWidth,0, "PL-----------" . $set['prayerLeader'], 0, 1, 'C');
-            $this->Cell($leaderWidth,0, "theodora Westleaphilanotec" . $set['sectionLeader']  , 0, 1, 'R');
+            $this->Cell($leaderWidth,0, "Worship Leader" .$set['worshipLeader']  , 0, 1, 'L');
+            $this->Cell($leaderWidth,0, "Prayer Leader" . $set['prayerLeader'], 0, 1, 'C');
+            $this->Cell($leaderWidth,0, "Section Leader" . $set['sectionLeader']  , 0, 1, 'R');
             $this->Ln(32);
             $this->SetFont('Arial', '', $nameFontSize);
 
@@ -125,18 +112,10 @@ class Pdf extends FPDF
             //$dateTime
         }
         $this->Output('I');
-        // $this->Output('F', 'staff-set-schedule.pdf');
+        // Or a file $this->Output('F', 'staff-set-schedule.pdf');
         exit;
     }
-    // function Footer()
-    // {
-    //     // Go to 1.5 cm from bottom
-    //     $this->SetY(-15);
-    //     // Select Arial italic 8
-    //     $this->SetFont('Arial', 'I', 8);
-    //     // Print centered page number
-    //     $this->Cell(0, 10, 'Page '.$this->PageNo(), 0, 0, 'C');
-    // }
+    
     public function collectSchedSets($day, $set, $location) {
         $schedLines = [];
         $daysOfWeek = [];
@@ -170,10 +149,7 @@ class Pdf extends FPDF
         ];
 
         $setSched = [] ;
-        // forEach($setOfDay as $setTime)  {
-
-            // logger($setTime);
-            //     // CarbonInterval::seconds(2),
+        
             $setTimeStartM = Carbon::parse($setTime)->addMinutes(60); //->format('h:i a');
             $setTimeEndM = Carbon::parse($setTime)->subMinutes(60); //->format('h:i a');
 
@@ -198,9 +174,7 @@ class Pdf extends FPDF
                 return ;
                 // logger("No Match");
             }
-        // };
-        // // logger($setSched);
-        // return $setSched;
+    
 
     }
     public function test() {

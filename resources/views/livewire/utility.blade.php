@@ -20,7 +20,7 @@
             </x-form-button>   
         </div>
         <div class="p-2 ">
-            <x-form-button method="GET" action="/pdf" >
+            <x-form-button method="POST" action="/generateStaffSetdPdf" >
                 {{ __('Generate PDF for sets') }}
             </x-form-button>   
         </div>  
