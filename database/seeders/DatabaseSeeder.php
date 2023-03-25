@@ -12,11 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $sets= new \Database\Seeders\SetSeeder;
+        $sets->run();
+        
+        \App\Models\User::factory(10)->withPersonalTeam()->create();
+        // \App\Models\Team::factory(10)->create();
+        \App\Models\User::factory()->withPersonalTeam()->create([
+                'name' => 'Dan Dodd',
+                'email' => 'dd@dd.io',
+            'password' => bcrypt('asdf'),
+            // 'current_team_id' => 1,
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // \App\Models\User::factory(10)->create();
     }
 }

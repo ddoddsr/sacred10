@@ -21,6 +21,7 @@ return new class extends Migration
             $table->char('worshipLeader', 24)->nullable();
             $table->char('prayerLeader', 24)->nullable();
             $table->char('title', 24)->nullable();
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

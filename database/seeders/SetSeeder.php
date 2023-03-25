@@ -62,6 +62,7 @@ class SetSeeder extends Seeder
                      'sectionLeader' => '',
                      'title' => in_array($set, $intercessionSets)  ? 'Intercession' : 'Worship with the Word',
                      'sequence' => $sequence++,
+                     'active' => true,
                  ];
                  $result = Set::create($set);
                  logger($result);

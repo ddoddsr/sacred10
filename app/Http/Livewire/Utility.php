@@ -39,8 +39,8 @@ class Utility extends Component
     public function generateStaffSetdPdf() 
     {
         logger("Generating Staff Set Schedule");
-        // $pdf = new Pdf;
-        // $pdf->test();
+        $pdf = new Pdf;
+        $pdf->testme();
     }
 
 

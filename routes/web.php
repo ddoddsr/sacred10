@@ -41,7 +41,7 @@ Route::middleware([
 
     Route::get('/formmeta',[FormsiteController::class, 'getFormMeta']);
 
-    Route::get('/pdf',[Pdf::class, 'test']);
+    Route::get('/pdf',[Pdf::class, 'setSchedule']);  //setSchedule
 
     Route::get('/sets/{set}/edit', function (Set $set) {
         return view('sets/edit', ['set' => $set]);
